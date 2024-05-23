@@ -1,0 +1,6 @@
+llama-index
+openai
+trulens-eval
+pypdf
+python-dotenv
+notebook
