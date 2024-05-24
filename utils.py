@@ -6,7 +6,7 @@ from trulens_eval.feedback.provider.openai import OpenAI
 
 import numpy as np
 
-provider = OpenAI()
+provider = OpenAI
 
 import numpy as np
 from trulens_eval import (
@@ -33,15 +33,15 @@ def get_hf_api_key():
 
     return os.getenv("HUGGINGFACE_API_KEY")
 
-provider= OpenAI()
+provider= OpenAI
 
 qa_relevance = (
-    Feedback(openai.relevance_with_cot_reasons, name="Answer Relevance")
+    Feedback(provider.relevance_with_cot_reasons, name="Answer Relevance")
     .on_input_output()
 )
 
 qs_relevance = (
-    Feedback(openai.relevance_with_cot_reasons, name = "Context Relevance")
+    Feedback(provider.relevance_with_cot_reasons, name = "Context Relevance")
     .on_input()
     .on(TruLlama.select_source_nodes().node.text)
     .aggregate(np.mean)
@@ -54,8 +54,9 @@ groundedness = (
     Feedback(provider.groundedness_measure_with_cot_reasons, name="Groundedness")
         .on(TruLlama.select_source_nodes().node.text)
         .on_output()
-        .aggregate(grounded.grounded_statements_aggregator)
 )
+
+# .aggregate(grounded.grounded_statements_aggregator)
 
 feedbacks = [qa_relevance, qs_relevance, groundedness]
 
@@ -126,13 +127,13 @@ def get_sentence_window_query_engine(
     return sentence_window_engine
 
 
-from llama_index.node_parser import HierarchicalNodeParser
+from llama_index.core.node_parser import HierarchicalNodeParser
 
-from llama_index.node_parser import get_leaf_nodes
-from llama_index import StorageContext
-from llama_index.retrievers import AutoMergingRetriever
-from llama_index.indices.postprocessor import SentenceTransformerRerank
-from llama_index.query_engine import RetrieverQueryEngine
+from llama_index.core.node_parser import get_leaf_nodes
+from llama_index.core import StorageContext
+from llama_index.core.retrievers import AutoMergingRetriever
+from llama_index.core.indices.postprocessor import SentenceTransformerRerank
+from llama_index.core.query_engine import RetrieverQueryEngine
 
 
 def build_automerging_index(

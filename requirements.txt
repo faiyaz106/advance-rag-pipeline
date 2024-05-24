@@ -4,3 +4,4 @@ trulens-eval
 pypdf
 python-dotenv
 notebook
+llama-index-embeddings-huggingface
